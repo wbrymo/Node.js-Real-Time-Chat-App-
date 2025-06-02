@@ -1,1 +1,37 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Node.js
+      yum:
+        name: nodejs
+        state: present
+
+    - name: Install Nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Start Nginx
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Copy app files
+      copy:
+        src: "{{ item }}"
+        dest: "/opt/chat-app/"
+      with_items:
+        - ../app.js
+        - ../package.json
+
+    - name: Install dependencies
+      shell: |
+        cd /opt/chat-app
+        npm install
+
+    - name: Start app
+      shell: |
+        cd /opt/chat-app
+        nohup node app.js &
 
