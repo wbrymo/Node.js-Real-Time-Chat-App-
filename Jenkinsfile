@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -21,10 +20,13 @@ pipeline {
                 sshagent(['ec2-ssh-key']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no ec2-user@35.175.80.176 "
+                        if [ ! -d /opt/chat-app ]; then
+                            git clone https://github.com/wbrymo/Node.js-Real-Time-Chat-App-.git /opt/chat-app;
+                        fi
                         cd /opt/chat-app &&
-                        git pull &&
+                        git pull origin main &&
                         npm install &&
-                        pm2 restart chat-app || pm2 start app.js --name chat-app
+                        pm2 start app.js --name chat-app || pm2 restart chat-app
                         "
                     '''
                 }
