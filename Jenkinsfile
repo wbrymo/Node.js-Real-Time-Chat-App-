@@ -20,7 +20,7 @@ pipeline {
             steps {
                 sshagent(['ec2-ssh-key']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no ec2-user@<Elastic-IP> "
+                        ssh -o StrictHostKeyChecking=no ec2-user@35.175.80.176 "
                         cd /opt/chat-app &&
                         git pull &&
                         npm install &&
