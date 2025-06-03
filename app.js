@@ -7,6 +7,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+// Serve static files (index.html)
+app.use(express.static(path.join(__dirname, '/')));
+
 io.on('connection', socket => {
     console.log('User connected');
     socket.on('disconnect', () => console.log('User disconnected'));
